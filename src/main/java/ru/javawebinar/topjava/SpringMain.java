@@ -20,24 +20,24 @@ public class SpringMain {
         try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
 
-            System.out.println();
-
-            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
-            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
-
-            System.out.println();
-
-            MealRestController mealRestController = appCtx.getBean(MealRestController.class);
-            mealRestController.getAll().forEach(System.out::println);
-
-            System.out.println();
-
-            List<MealTo> meals = mealRestController.getBetweenHalfOpen(LocalDate.of(2020, Month.JANUARY, 29), LocalTime.of(7, 0), LocalDate.of(2020, Month.FEBRUARY, 10), LocalTime.of(14, 0));
-            meals.forEach(System.out::println);
-
-            System.out.println();
-
-            mealRestController.getBetweenHalfOpen(null, null, null, null);
+//            System.out.println();
+//
+//            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
+//            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
+//
+//            System.out.println();
+//
+//            MealRestController mealRestController = appCtx.getBean(MealRestController.class);
+//            mealRestController.getAll().forEach(System.out::println);
+//
+//            System.out.println();
+//
+//            List<MealTo> meals = mealRestController.getBetweenHalfOpen(LocalDate.of(2020, Month.JANUARY, 29), LocalTime.of(7, 0), LocalDate.of(2020, Month.FEBRUARY, 10), LocalTime.of(14, 0));
+//            meals.forEach(System.out::println);
+//
+//            System.out.println();
+//
+//            mealRestController.getBetweenHalfOpen(null, null, null, null);
         }
     }
 }

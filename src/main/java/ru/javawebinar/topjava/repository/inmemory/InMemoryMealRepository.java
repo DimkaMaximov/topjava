@@ -25,19 +25,19 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(meal -> save(meal, USER_ID));
-        save(new Meal(LocalDateTime.of(2020, Month.FEBRUARY, 1, 10, 0), "Завтрак Админа", 500), ADMIN_ID);
-        save(new Meal(LocalDateTime.of(2020, Month.FEBRUARY, 1, 13, 0), "Обед Админа", 1000), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2021, Month.DECEMBER, 9, 10, 0), "Завтрак Админа", 500), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2020, Month.DECEMBER, 9, 13, 0), "Обед Админа", 1000), ADMIN_ID);
     }
 
 
     @Override
     public Meal save(Meal meal, int userId) {
         if (meal.isNew()) meal.setId(counter.incrementAndGet());
-        if (repository.containsKey(userId)) {
-            //return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
-        } else {
-            repository.put(userId, new ConcurrentHashMap<>());
+        if (!repository.containsKey(userId)) repository.put(userId, new ConcurrentHashMap<>());
+        if (repository.get(userId).containsKey(meal.getId())){
+            //repository.get(userId).put(meal.getId(), meal);
         }
+        //return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
         repository.get(userId).put(meal.getId(), meal);
         return meal;
     }
@@ -45,7 +45,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        return repository.remove(id) != null;
+        return repository.get(userId).remove(id) != null;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class InMemoryMealRepository implements MealRepository {
         Map<Integer, Meal> meals = repository.get(userId);
         return CollectionUtils.isEmpty(meals) ? Collections.emptyList() :
                 meals.values().stream()
-                        .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), start, end))
+                        .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), start, end.plusDays(1)))
                         .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                         .collect(Collectors.toList());
     }

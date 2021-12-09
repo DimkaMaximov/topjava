@@ -14,15 +14,55 @@
         .excess {
             color: red;
         }
+        dl {
+            background: none repeat scroll 0 0 #FAFAFA;
+            margin: 8px 0;
+            padding: 0;
+        }
+
+        dt {
+            display: inline-block;
+            width: 170px;
+        }
+
+        dd {
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: top;
+        }
     </style>
+
 </head>
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
-    <hr/>
+    <hr>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
+
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter">
+        <dl>
+            <dt>From date:</dt>
+            <dd><input type="date"  name="fromDate" required></dd>
+        </dl>
+        <dl>
+            <dt>to date:</dt>
+            <dd><input type="date"  size=40 name="toDate" required></dd>
+        </dl>
+        <dl>
+            <dt>From time:</dt>
+            <dd><input type="time"  name="fromTime" required></dd>
+        </dl>
+        <dl>
+            <dt>to time:</dt>
+            <dd><input type="time" size=40 name="toTime" required></dd>
+        </dl>
+        <button type="submit">Filter</button>
+        <button onclick="window.history.back()" type="button">Cancel</button>
+    </form>
+
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
