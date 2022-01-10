@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/03b89b06b5704dd6abbc0281376973f1)](https://www.codacy.com/gh/DimkaMaximov/topjava/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DimkaMaximov/topjava&amp;utm_campaign=Badge_Grade)
+
 Java Enterprise Online Project
 ===============================
 
