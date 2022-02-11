@@ -15,16 +15,16 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
-public class JdbcMealRepository implements MealRepository {
 
-    private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
+public abstract class JdbcMealRepository implements MealRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    protected static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    protected final JdbcTemplate jdbcTemplate;
 
-    private final SimpleJdbcInsert insertMeal;
+    protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    protected final SimpleJdbcInsert insertMeal;
 
     @Autowired
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -36,7 +36,6 @@ public class JdbcMealRepository implements MealRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    @Override
     public Meal save(Meal meal, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
@@ -59,28 +58,20 @@ public class JdbcMealRepository implements MealRepository {
         return meal;
     }
 
-    @Override
     public boolean delete(int id, int userId) {
         return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", id, userId) != 0;
     }
 
-    @Override
     public Meal get(int id, int userId) {
         List<Meal> meals = jdbcTemplate.query(
                 "SELECT * FROM meals WHERE id = ? AND user_id = ?", ROW_MAPPER, id, userId);
         return DataAccessUtils.singleResult(meals);
     }
 
-    @Override
     public List<Meal> getAll(int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=? ORDER BY date_time DESC", ROW_MAPPER, userId);
     }
 
-    @Override
-    public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM meals WHERE user_id=?  AND date_time >=  ? AND date_time < ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDateTime, endDateTime);
-    }
+    public abstract List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
 }
